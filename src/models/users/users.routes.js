@@ -11,6 +11,11 @@ const controller = require('./users.controller');
  *           Get a list of the users
  * 
  */
-router.use('/', controller.getAll);
+router.get('/', controller.getAll);
+
+/**
+ * 
+ */
+router.post('/', controller.create);
 
 module.exports = router;

@@ -15,6 +15,14 @@ class Model {
             });
         })
     }
+    create(doc) {
+        return new Promise((resolve, reject) => {
+            this.collection.insertOne(doc, (err, results) => {
+                if(err) return reject(err);
+                resolve(results);
+            })
+        })
+    }
 }
 
 module.exports = Model;

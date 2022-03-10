@@ -1,6 +1,6 @@
 //dependencies
 const express = require('express');
-const fs = require('fs');
+const bodyParser = require('body-parser');
 
 //swagger dependencies
 const swaggerJsDocs = require('swagger-jsdoc');
@@ -13,6 +13,10 @@ const swaggerConf = require('./swaggerConf');
 
 //init app
 const app = express();
+app.use( bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 //swagger config
 const swaggerSpec = swaggerJsDocs(swaggerConf);
