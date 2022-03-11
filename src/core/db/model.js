@@ -10,7 +10,7 @@ class Model {
     getAll () {
         return new Promise((resolve, reject) => {
             this.collection.find().toArray((err, results) => {
-                if(err) return reject(err);
+                if(err) reject(err);
                 resolve(results);
             });
         })
@@ -18,7 +18,7 @@ class Model {
     create(doc) {
         return new Promise((resolve, reject) => {
             this.collection.insertOne(doc, (err, results) => {
-                if(err) return reject(err);
+                if(err) reject(err);
                 resolve(results);
             })
         })

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const Model = require("./users.model");
-const schema = require("./users.schema");
+const {schema, createUserSchema} = require("./users.schema");
+const boom = require('@hapi/boom');
 
 const UserController = {
     getAll: (req, res) => {
@@ -12,9 +13,9 @@ const UserController = {
     create: (req, res) => {
         const body = req.body;
         const model = new Model();
-        const validation = schema.validate(body);
+        const validation = createUserSchema.validate(body);
         //if the request does not fit the schema, returns a 400.
-        if(validation.error) res.status(400).json({ error: validation.error});
+        if(validation.error) throw boom.badRequest();
         
         //else, it will continue trying to create the model.
         else model.getByEmail(body.email)
@@ -32,6 +33,7 @@ const UserController = {
 
                     //create the model into the db
                     model.create(body).then(results => {
+                        delete body.password;
                         res.status(201).json({
                             ...results,
                             message: 'Successfully created'
@@ -40,7 +42,7 @@ const UserController = {
 
                 }).catch(err => res.sendStatus(500));
 
-        }).catch(err => res.sendStatus(500));
+        }).catch(err =>{ throw boom.conflict('The email is already in use.')});
         
     },
 }

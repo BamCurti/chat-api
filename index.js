@@ -1,6 +1,7 @@
 //dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 //swagger dependencies
 const swaggerJsDocs = require('swagger-jsdoc');
@@ -10,10 +11,11 @@ const swaggerUi = require('swagger-ui-express');
 const apiRoutes = require('./src/routes');
 const db = require('./src/core/db');
 const swaggerConf = require('./swaggerConf');
+const { errorHandler, boomErrorHandler } = require('./src/core/middleware/error.handler');
 
 //init app
 const app = express();
-app.use( bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
@@ -22,17 +24,18 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 const swaggerSpec = swaggerJsDocs(swaggerConf);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-//set endpoint
-app.get('/', (req, res) => {
-    res.send('api works!');
-});
-
 //set api endpoint
 app.use('/api', apiRoutes);
+require('./src/auth');
+
+
+//set error handler
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 db.connect()
 .then((client) => {
-    console.log(`Client ${client} is connected to Mongo!`);
+    console.log('DB connected');
 })
 
 //list to port

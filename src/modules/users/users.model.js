@@ -1,5 +1,5 @@
 const Model = require('../../core/db/model');
-
+const boom = require('@hapi/boom'); 
 
 class User extends Model{
     constructor() {
@@ -9,11 +9,13 @@ class User extends Model{
     getByEmail(email) {
         return new Promise((resolve, reject) => {
             this.collection.findOne({email: email})
-            .then(result => resolve(result))
-            .catch(err => reject(err));
+            .then(result => {
+                if(!result) reject(boom.notFound('User not found'));
+                resolve(result);
+            })
+            .catch(err => reject(boom.internal()));
         })
     }
-
 }
 
 module.exports = User;

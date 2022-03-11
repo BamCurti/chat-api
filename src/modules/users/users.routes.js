@@ -14,8 +14,22 @@ const controller = require('./users.controller');
 router.get('/', controller.getAll);
 
 /**
- * 
+ * @swagger
+ * /api/users:
+ *   post:
+ *     description: Create a new user.
+ *       responses:
+ *         201:
+ *           A new user is created.
+ *         400:
+ *           The petition does not follow the format specified.
+ *         409:
+ *           The user already exists.
  */
 router.post('/', controller.create);
+
+/**
+ * 
+ */
 
 module.exports = router;
