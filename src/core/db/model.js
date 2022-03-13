@@ -23,6 +23,14 @@ class Model {
             })
         })
     }
+    filter(doc) {
+        return new Promise((resolve, reject) => {
+            this.collection.findOne(doc, (err, results) => {
+                if(err) reject(err);
+                resolve(results);
+            })
+        })
+    }
 }
 
 module.exports = Model;

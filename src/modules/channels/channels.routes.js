@@ -17,9 +17,15 @@ const passport = require('passport');
  */
 router.post('/',
     passport.authenticate('jwt', {session: false}),
-    controller.validate,
+    controller.validateCreationForm,
     controller.nameNotTaken,
     controller.create
 );
+router.get('/:id',
+    passport.authenticate('jwt', {session: false}),
+    controller.validateLinkForm,
+    controller.createdBy,
+    controller.get
+)
 
 module.exports = router;

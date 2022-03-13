@@ -1,6 +1,7 @@
 const Channel = require('./channels.model');
-const {createChannelSchema} = require('./channels.schema');
+const {createChannelSchema, linkChannelSchema} = require('./channels.schema');
 const boom = require('@hapi/boom');
+const { ObjectId } = require('mongodb');
 
 const ChannelController = {
     create: (req, res) => {
@@ -17,7 +18,7 @@ const ChannelController = {
         })
         .catch(err => res.sendStatus(500))
     },
-    validate: (req, res, next) => {
+    validateCreationForm: (req, res, next) => {
         //first if the form is valid
         const body = req.body;
         const validation = createChannelSchema.validate(body);
@@ -34,6 +35,38 @@ const ChannelController = {
             next();
         })
         .catch(err => next(boom.internal()));
+    },
+    get: (req, res) => {
+        const body = req.body;
+        body.apiLink = process.env.URL + "/api/channels" + req.url;
+
+        res.json(body);
+    },
+    validateLinkForm: (req, res, next) => {
+        const body = req.body;
+        body.id = req.params.id;
+        const validation = linkChannelSchema.validate(body);
+        if(validation.error) next(boom.badRequest());
+        next()
+
+    },
+    createdBy: (req, res, next) => {
+        const filter = {
+            creator: req.body.creator
+        }
+
+        const channelModel = new Channel();
+        channelModel.filter(filter)
+        .then((results) => {
+            if(!results) next(boom.notFound());
+            const id = results._id.toString();            
+            if(id !== req.params.id) next(boom.forbidden())
+
+            next();
+        })
+        .catch((err) => next(boom.internal()))
+        
+
     }
 }
 
