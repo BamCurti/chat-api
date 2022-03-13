@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const Model = require("./users.model");
-const {schema, createUserSchema} = require("./users.schema");
+const { createUserSchema } = require("./users.schema");
 const boom = require('@hapi/boom');
 
 const UserController = {
