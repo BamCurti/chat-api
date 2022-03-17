@@ -21,10 +21,10 @@ router.post('/',
     controller.nameNotTaken,
     controller.create
 );
+
+
 router.get('/:id',
     passport.authenticate('jwt', {session: false}),
-    controller.validateLinkForm,
-    controller.createdBy,
     controller.get
 )
 

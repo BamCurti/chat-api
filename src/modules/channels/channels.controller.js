@@ -6,6 +6,7 @@ const { ObjectId } = require('mongodb');
 const ChannelController = {
     create: (req, res) => {
         const body = req.body;
+
         const channelModel = new Channel();
         channelModel.create(body)
         .then(result => {
@@ -13,6 +14,7 @@ const ChannelController = {
             .json({ 
                 id: result.instertedId,
                 members: [body.creator],
+                url: `${process.env.URL}/invite/${result.insertedId}`,
                 ...body
             })
         })
@@ -37,36 +39,19 @@ const ChannelController = {
         .catch(err => next(boom.internal()));
     },
     get: (req, res) => {
-        const body = req.body;
-        body.apiLink = process.env.URL + "/api/channels" + req.url;
-
-        res.json(body);
-    },
-    validateLinkForm: (req, res, next) => {
-        const body = req.body;
-        body.id = req.params.id;
-        const validation = linkChannelSchema.validate(body);
-        if(validation.error) next(boom.badRequest());
-        next()
-
-    },
-    createdBy: (req, res, next) => {
-        const filter = {
-            creator: req.body.creator
+        const id = req.params.id;
+        const query = {
+            _id: ObjectId(id)
         }
+        const model = new Channel();
+        model.filter(query)
+        .then(obj => {
+            obj.url = `${process.env.URL}/invite/${id}`
 
-        const channelModel = new Channel();
-        channelModel.filter(filter)
-        .then((results) => {
-            if(!results) next(boom.notFound());
-            const id = results._id.toString();            
-            if(id !== req.params.id) next(boom.forbidden())
-
-            next();
+            res.json(obj)
         })
-        .catch((err) => next(boom.internal()))
+        .catch(err => res.sendStatus(404))
         
-
     }
 }
 
