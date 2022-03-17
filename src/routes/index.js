@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const userRoutes = require('./../modules/users/users.routes');
-const channelRoutes = require('./../modules/channels/channels.router');
+const channelRoutes = require('./../modules/channels/channels.routes');
 const authRoutes = require('./../auth/auth.routes');
 
 router.use('/users', userRoutes);
