@@ -8,7 +8,7 @@ const controller = require('./users.controller');
  *       description: Get all the users
  *       responses:
  *         200:
- *           Get a list of the users
+ *           description: Get a list of the users.
  * 
  */
 router.get('/', controller.getAll);
@@ -18,13 +18,13 @@ router.get('/', controller.getAll);
  * /api/users:
  *   post:
  *     description: Create a new user.
- *       responses:
- *         201:
- *           A new user is created.
- *         400:
- *           The petition does not follow the format specified.
- *         409:
- *           The user already exists.
+ *     responses:
+ *       201:
+ *         description: A new user is created.
+ *       400:
+ *         description: The petition does not follow the format specified.
+ *       409:
+ *         description: The user already exists.
  */
 router.post('/', controller.create);
 

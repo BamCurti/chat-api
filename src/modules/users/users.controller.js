@@ -43,8 +43,17 @@ const UserController = {
                 }).catch(err => res.sendStatus(500));
 
         }).catch(err =>{ throw boom.conflict('The email is already in use.')});
-        
     },
+    itExist(req, res, next) {
+        const { user } = req.query;
+        const userModel = new Model();
+        userModel.get(user)
+        .then((user) => {
+            if(!user) next(boom.notFound());
+            next();
+        }).catch(err => next(err));
+    }
+
 }
 
 module.exports = UserController;
