@@ -5,7 +5,7 @@ const boom = require('@hapi/boom');
 
 const UserController = {
     getAll: (req, res) => {
-        const users = new User();
+        const users = new Model();
         users.getAll().then(results => {
             res.send(results);
         });
