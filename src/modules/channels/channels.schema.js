@@ -14,9 +14,9 @@ const createChannelSchema = joi.object({
 const linkChannelSchema = joi.object({
     id: id.required(),
     creator: creator.required()
-})
+});
 
 module.exports = {
     createChannelSchema,
-    linkChannelSchema
+    linkChannelSchema,
 };
