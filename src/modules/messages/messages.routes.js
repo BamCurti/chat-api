@@ -43,4 +43,28 @@ router.post('/',
     messageController.createValidator,
     messageController.create
 );
+/**
+ * @swagger
+ *   /api/messages:
+ *     get:
+ *       description: Get all the messages. you can filter the messages by user or channel.
+ *       parameters:
+ *         - in: query
+ *           name: user
+ *           schema:
+ *             type: string
+ *           description: The id of the user to get the messages.
+ *         - in: query
+ *           name: channel
+ *           schema:
+ *             type: string
+ *           description: The id of the channel to get the messages.
+ *       responses:
+ *         200:
+ *           description: Fetch all the messages.
+ */
+router.get('/',
+    passport.authenticate('jwt', {session: false}),
+    messageController.get
+);
 module.exports = router;

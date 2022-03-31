@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const cors = require('cors');
 
 //swagger dependencies
 const swaggerJsDocs = require('swagger-jsdoc');
@@ -15,6 +16,7 @@ const { errorHandler, boomErrorHandler } = require('./src/core/middleware/error.
 
 //init app
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true

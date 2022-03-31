@@ -43,6 +43,20 @@ const MessageController = {
 
     },
     get: (req, res) => {
+        const user = req.query.user;
+        const channel = req.query.channel;
+
+        const query = {
+
+        };
+
+        console.log(query);
+
+        const message = new Message();
+        
+        message.filter(query)
+        .then((doc) => res.json(doc))
+        .catch((err) => res.status(500).send(err));
 
     }
 }

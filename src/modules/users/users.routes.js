@@ -26,6 +26,10 @@ router.get('/', controller.getAll);
  *       409:
  *         description: The user already exists.
  */
-router.post('/', controller.create);
+router.post('/',
+    controller.validateSignUp,
+    controller.emailNotTaken,
+    controller.create
+);
 
 module.exports = router;
