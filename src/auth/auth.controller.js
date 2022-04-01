@@ -10,10 +10,13 @@ const AuthController = {
             date
         }
 
-        const token = jwt.sign(payload, secret);
-        res.json({id, token});
+        const token = jwt.sign(payload, secret, {expiresIn: '86400s'});
 
-    }    
+        res.json({id, token});
+    }
+
+
+
 }
 
 module.exports = AuthController;
